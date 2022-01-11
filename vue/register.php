@@ -4,7 +4,7 @@ include("../model/utilisateurs-fonction.php");
 
 // Si l'utilisateur est déjà connecté, il est renvoyé sur la page d'accueil
 if (isset($_SESSION["role"])) {
-    
+    header("Location: index.php");
 }
 
 // Récupération des informations
