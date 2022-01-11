@@ -1,11 +1,11 @@
 <?php
 session_start();
 
-include("../model/functions/utilisateurs-fonction.php");
+include("../model/utilisateurs-fonction.php");
 
 // Si l'utilisateur est déjà connecté, il est renvoyé sur la page d'accueil
 if (isset($_SESSION["role"])) {
-    header("Location: accueil.php");
+    header("Location: index.php");
 }
 
 // Récupération des données de connexion
@@ -28,7 +28,7 @@ if (isset($email) != null && isset($mdp) != null) {
                     $_SESSION["role"] = "admin";
                 }
                 $_SESSION["idUser"] = $user[0]["id_user"];
-                header("Location: accueil.php");
+                header("Location: index.php");
             }
             else{
                 $erreur = true;
