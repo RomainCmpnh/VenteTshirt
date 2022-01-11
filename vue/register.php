@@ -1,3 +1,64 @@
+<?php
+session_start();
+include("../model/utilisateurs-fonction.php");
+
+// Si l'utilisateur est déjà connecté, il est renvoyé sur la page d'accueil
+if (isset($_SESSION["role"])) {
+    
+}
+
+// Récupération des informations
+$pseudo = filter_input(INPUT_POST, "pseudo", FILTER_SANITIZE_STRING);
+$mdp = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
+$mdp = hash('sha256', $mdp);
+$email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_STRING);
+$confirmation = filter_input(INPUT_POST, "envois", FILTER_SANITIZE_STRING);
+
+$erreur = false;
+
+// Ajout de l'utilisateur
+if (isset($confirmation)) {
+    if ($pseudo != null && $mdp != null && $email != null && $pseudo != " " && $mdp != " " && $email != " ") {
+        $checkEmail = getAllUsersByEmail($email);
+        if ($checkEmail == null) {
+            try {
+                $id = addUser($pseudo, $mdp, $email);
+                $_SESSION["role"] = "user";
+                $_SESSION["idUser"] = $id[1];
+                header("Location: index.php?new=1");
+            } catch (Exception $e) {
+                $erreur = true;
+                $txtErreur = "Merci de contacter un administrateur : " . $e;
+            }
+        } else {
+            if($checkEmail[0]["actif"]==0){
+                try {
+                    $id = enableUser($email, $pseudo, $mdp);
+                    if($checkEmail[0]["admin"]==0){
+                        $_SESSION["role"] = "user";
+                    }
+                    else{
+                        $_SESSION["role"] = "admin";
+                    }
+                    $_SESSION["idUser"] = $checkEmail[0]["id_user"];
+                    header("Location: index.php?new=1");
+                } catch (Exception $e) {
+                    $erreur = true;
+                    $txtErreur = "Merci de contacter un administrateur : " . $e;
+                }
+            }
+            else{
+                $erreur = true;
+                $txtErreur = "L'email est déjà utilisé!";
+            }
+        }
+    } else {
+        $erreur = true;
+        $txtErreur = "Les champs sont incomplets.";
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -39,10 +100,10 @@
                                     <div class="collapse navbar-collapse" id="navcol-2">
                                         <ul class="navbar-nav ms-auto">
                                         <li class="nav-item"><a class="nav-link active" href="index.php">Acceuil</a></li>
-                        <li class="nav-item"><a class="nav-link" href="shop.php">Produit</a></li>
-                        <li class="nav-item"><a class="nav-link" href="login.php">Connexion</a></li>
-                        <li class="nav-item"><a class="nav-link" href="register.php">Inscription</a></li>
-                        <li class="nav-item"><a class="nav-link" href="basket.php">Panier</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="shop.php">Produit</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="login.php">Connexion</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="register.php">Inscription</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="basket.php">Panier</a></li>
                                         </ul>
                                     </div>
                                 </div>
