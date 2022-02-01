@@ -91,10 +91,11 @@ if (isset($confirmation)) {
                     <section class="login-clean">
                         <form method="post">
                             <h2 class="visually-hidden">Login Form</h2>
-                            <div class="illustration"><input class="form-control" type="email" name="Pseudo" placeholder="Pseudo"></div>
+                            <div class="illustration"><input class="form-control" type="text" name="pseudo" placeholder="Pseudo"></div>
                             <div class="mb-3"><input class="form-control" type="email" name="email" placeholder="Email"></div>
                             <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Mot de passe"></div>
                             <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit" style="background: var(--bs-blue);">S'inscrire</button></div>
+                            <input type="hidden" name="envois" value="true">
                             <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
                                 <div class="container"><a class="navbar-brand logo" href="#">T-Shirt shop</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                                     <div class="collapse navbar-collapse" id="navcol-2">
